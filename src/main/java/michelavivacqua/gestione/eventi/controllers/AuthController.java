@@ -22,12 +22,13 @@ public class AuthController {
     @Autowired
     private UtentiService utentiService;
 
+//    POST http://localhost:3001/auth/login
     @PostMapping("/login")
     public UtenteLoginRespDTO login(@RequestBody UtenteLoginDTO payload){
         return new UtenteLoginRespDTO(this.authService.authenticateUserAndGenerateToken(payload));
     }
 
-//    http://localhost:3001/auth/register
+//    POST http://localhost:3001/auth/register
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public NewUtenteRespDTO saveUser(@RequestBody @Validated NewUtenteDTO body, BindingResult validation){

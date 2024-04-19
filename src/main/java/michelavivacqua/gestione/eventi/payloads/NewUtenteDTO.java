@@ -7,7 +7,7 @@ import michelavivacqua.gestione.eventi.enums.Ruolo;
 
 public record NewUtenteDTO(
         @NotEmpty(message = "È obbligatorio avere un username")
-        @Size(min = 8, max = 30, message = "L'username deve essere compreso tra gli 8 e i 30 caratteri")
+        @Size(min = 3, max = 30, message = "L'username deve essere compreso tra gli 3 e i 30 caratteri")
         String username,
         @NotEmpty(message = "Il nome è obbligatorio")
         @Size(min = 3, max = 30, message = "Il nome deve essere compreso tra i 3 e i 30 caratteri")

@@ -13,7 +13,7 @@ public class BadRequestException extends RuntimeException{
     }
 
     public BadRequestException(List<ObjectError> errorsList){
-        super("Ci sono stati errori di validazione nel payload!");
+        super("Errore! Tutti i campi sono obbligatori; Username, nome e cognome devono avere tra i 3 e gli 8 caratteri, e il ruolo può essere ORGANIZZATORE o PARTECIPANTE");
         this.errorsList = errorsList;
     }
 }

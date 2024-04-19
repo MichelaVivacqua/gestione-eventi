@@ -7,6 +7,7 @@ import michelavivacqua.gestione.eventi.payloads.NewEventoRespDTO;
 import michelavivacqua.gestione.eventi.services.EventiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.validation.BindingResult;
@@ -22,8 +23,9 @@ public class EventiController {
     @Autowired
     private EventiService eventiService;
 
-    //    1. POST http://localhost:3001/eventi (+ body)
+    //    1. POST http://localhost:3001/eventi (+ body) (+authorization bear token da organizzatore)
     @PostMapping
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')") //solo un organizzatore può creare eventi
     @ResponseStatus(HttpStatus.CREATED)
     public NewEventoRespDTO saveEvento(@RequestBody @Validated NewEventoDTO body, BindingResult validation){
 
@@ -45,7 +47,7 @@ public class EventiController {
 
     //    3. GET http://localhost:3001/eventi
     @GetMapping
-    private List<Evento> getAllEvento(){
+    public List<Evento> getAllEvento(){
         return this.eventiService.getEventiList();
     }
 
@@ -57,16 +59,18 @@ public class EventiController {
         return this.eventiService.getDispositivi(page, size, sortBy);
     }
 
-    // 4. PUT http://localhost:3001/eventi/{{eventoId}} (+ body)
+    // 4. PUT http://localhost:3001/eventi/{{eventoId}} (+ body) (+authorization bear token da organizzatore)
     @PutMapping("/{eventoId}")
-    private Evento findByIdAndUpdate(@PathVariable int eventoId, @RequestBody Evento body){
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')") //solo un organizzatore può modificare eventi
+    public Evento findByIdAndUpdate(@PathVariable int eventoId, @RequestBody Evento body){
         return this.eventiService.findByIdAndUpdate(eventoId, body);
     }
 
 
 
-    // 5. DELETE http://localhost:3001/eventi/{eventoId}
+    // 5. DELETE http://localhost:3001/eventi/{eventoId} (+authorization bear token da organizzatore)
     @DeleteMapping("/{eventoId}")
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')") //solo un organizzatore può modificare eventi
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEventoById(@PathVariable int eventoId) {
         this.eventiService.findByIdAndDelete(eventoId);

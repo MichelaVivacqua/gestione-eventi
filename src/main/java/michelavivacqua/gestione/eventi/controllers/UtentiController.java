@@ -58,10 +58,10 @@ public class UtentiController {
         return this.utentiService.findById(utenteId);
     }
 
-    //    3. GET http://localhost:3001/utenti
+    //    3. GET http://localhost:3001/utenti (+authorization bear token da organizzatore)
     @GetMapping
     @PreAuthorize("hasAuthority('ORGANIZZATORE')")
-    private List<Utente> getAllUtenti(){
+    public List<Utente> getAllUtenti(){
         return this.utentiService.getUtentiList();
     }
 

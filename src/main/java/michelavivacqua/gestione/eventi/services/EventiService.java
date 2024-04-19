@@ -1,5 +1,6 @@
 package michelavivacqua.gestione.eventi.services;
 
+import jakarta.transaction.Transactional;
 import michelavivacqua.gestione.eventi.entities.Evento;
 import michelavivacqua.gestione.eventi.exceptions.NotFoundException;
 import michelavivacqua.gestione.eventi.payloads.NewEventoDTO;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventiService {
@@ -64,5 +66,19 @@ public class EventiService {
         if(size > 50) size = 50;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return this.eventiDAO.findAll(pageable);
+    }
+
+    @Transactional
+    public boolean prenotaPosto(int eventoId) {
+        Optional<Evento> optionalEvento = eventiDAO.findById(eventoId);
+        if (optionalEvento.isPresent()) {
+            Evento evento = optionalEvento.get();
+            if (evento.getCapienza() > 0) {
+                evento.setCapienza(evento.getCapienza() - 1);
+                eventiDAO.save(evento);
+                return true; // Prenotazione riuscita
+            }
+        }
+        return false; // Prenotazione non riuscita
     }
 }

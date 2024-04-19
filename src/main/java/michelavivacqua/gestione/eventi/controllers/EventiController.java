@@ -7,6 +7,7 @@ import michelavivacqua.gestione.eventi.payloads.NewEventoRespDTO;
 import michelavivacqua.gestione.eventi.services.EventiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,4 +76,18 @@ public class EventiController {
     public void deleteEventoById(@PathVariable int eventoId) {
         this.eventiService.findByIdAndDelete(eventoId);
     }
+
+    // PRENOTA
+    // POST http://localhost:3001/eventi/{eventoId}/prenota (+authorization bear token da partecipante)
+    @PostMapping("/{eventoId}/prenota")
+    @PreAuthorize("hasAuthority('PARTECIPANTE')") //solo un utente di tipo partecipante può creare eventi
+    public ResponseEntity<String> prenotaPosto(@PathVariable int eventoId) {
+        boolean prenotazioneRiuscita = eventiService.prenotaPosto(eventoId);
+        if (prenotazioneRiuscita) {
+            return ResponseEntity.ok("Prenotazione avvenuta con successo!");
+        } else {
+            return ResponseEntity.badRequest().body("Impossibile effettuare la prenotazione per questo evento. Posti esauriti.");
+        }
+    }
+
 }

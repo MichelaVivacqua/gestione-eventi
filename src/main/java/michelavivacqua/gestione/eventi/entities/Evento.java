@@ -23,4 +23,12 @@ public class Evento {
     private LocalDate data;
     private String location;
     private int capienza;
+
+    public Evento(String titolo, String descrizione, LocalDate data, String location, int capienza) {
+        this.titolo=titolo;
+        this.descrizione=descrizione;
+        this.data=data;
+        this.location=location;
+        this.capienza=capienza;
+    }
 }

@@ -27,6 +27,7 @@ public class AuthController {
         return new UtenteLoginRespDTO(this.authService.authenticateUserAndGenerateToken(payload));
     }
 
+//    http://localhost:3001/auth/register
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public NewUtenteRespDTO saveUser(@RequestBody @Validated NewUtenteDTO body, BindingResult validation){

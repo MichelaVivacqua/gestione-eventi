@@ -3,6 +3,7 @@ package michelavivacqua.gestione.eventi.exceptions;
 import michelavivacqua.gestione.eventi.payloads.ErrorsPayload;
 import michelavivacqua.gestione.eventi.payloads.ErrorsResponseDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,6 +35,12 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED) // 401
     public ErrorsResponseDTO handleUnauthorized(UnauthorizedException ex){
         return new ErrorsResponseDTO(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN) // 403
+    public ErrorsResponseDTO handleForbidden(AccessDeniedException ex){
+        return new ErrorsResponseDTO("Non hai l'autorizzazione!", LocalDateTime.now());
     }
 
 }

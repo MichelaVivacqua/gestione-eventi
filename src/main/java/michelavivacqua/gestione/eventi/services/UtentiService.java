@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class UtentiService {
 
     @Autowired
     private UtentiDAO utentiDAO;
+
+    @Autowired
+    private PasswordEncoder bcrypt;
 
 
     public UtentiService(UtentiDAO utentiDAO) {
@@ -37,7 +41,7 @@ public class UtentiService {
             throw new BadRequestException("L'email " + newUtenteDTO.email() + " è già in uso, quindi l'utente ha già un account! Contatta l'assistenza se hai dimenticato la tua password");
         }
 
-        Utente utente = new Utente(newUtenteDTO.username(), newUtenteDTO.nome(), newUtenteDTO.cognome(), newUtenteDTO.email(), newUtenteDTO.password(), newUtenteDTO.ruolo());
+        Utente utente = new Utente(newUtenteDTO.username(), newUtenteDTO.nome(), newUtenteDTO.cognome(), newUtenteDTO.email(), bcrypt.encode(newUtenteDTO.password()), newUtenteDTO.ruolo());
 //        System.out.println(utente);
         return utentiDAO.save(utente);
     }

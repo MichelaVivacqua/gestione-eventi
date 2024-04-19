@@ -7,6 +7,8 @@ import michelavivacqua.gestione.eventi.payloads.NewUtenteRespDTO;
 import michelavivacqua.gestione.eventi.services.UtentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,22 @@ public class UtentiController {
         System.out.println(body);
         return new NewUtenteRespDTO(this.utentiService.saveUtente(body).getId());}
 
+    @GetMapping("/me")
+    public Utente getProfile(@AuthenticationPrincipal Utente currentAuthenticatedUtente){
+        return currentAuthenticatedUtente;
+    }
+
+    @PutMapping("/me")
+    public Utente updateProfile(@AuthenticationPrincipal Utente currentAuthenticatedUtente, @RequestBody Utente updatedUtente){
+        return this.utentiService.findByIdAndUpdate(currentAuthenticatedUtente.getId(), updatedUtente);
+    }
+
+    @DeleteMapping("/me")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProfile(@AuthenticationPrincipal Utente currentAuthenticatedUtente){
+        this.utentiService.findByIdAndDelete(currentAuthenticatedUtente.getId());
+    }
+
 
 
     // 2. GET http://localhost:3001/utenti/{{utenteId}}
@@ -42,6 +60,7 @@ public class UtentiController {
 
     //    3. GET http://localhost:3001/utenti
     @GetMapping
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
     private List<Utente> getAllUtenti(){
         return this.utentiService.getUtentiList();
     }

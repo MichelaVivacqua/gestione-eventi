@@ -1,5 +1,6 @@
 package michelavivacqua.gestione.eventi.controllers;
 
+import michelavivacqua.gestione.eventi.entities.Evento;
 import michelavivacqua.gestione.eventi.entities.Utente;
 import michelavivacqua.gestione.eventi.exceptions.BadRequestException;
 import michelavivacqua.gestione.eventi.payloads.NewUtenteDTO;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -87,6 +89,26 @@ public class UtentiController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUtenteById(@PathVariable int utenteId) {
         this.utentiService.findByIdAndDelete(utenteId);
+    }
+
+//     GET http://localhost:3001/utenti/{utenteId}/prenotazioni (+authorization bear token da partecipante)
+    @GetMapping("/{utenteId}/prenotazioni")
+    @PreAuthorize("hasAuthority('PARTECIPANTE')") //solo un utente di tipo partecipante può visualizzare le sue prenotazioni
+    public ResponseEntity<List<Evento>> getPrenotazioniUtente(@PathVariable int utenteId) {
+        List<Evento> prenotazioni = utentiService.getPrenotazioniUtente(utenteId);
+        return ResponseEntity.ok(prenotazioni);
+    }
+
+//     DELETE http://localhost:3001/utenti/{utenteId}/prenotazioni/{eventoId} (+authorization bear token da partecipante)
+    @DeleteMapping("/{utenteId}/prenotazioni/{eventoId}")
+    @PreAuthorize("hasAuthority('PARTECIPANTE')") //solo un utente di tipo partecipante può eliminare una sua prenotazione
+    public ResponseEntity<String> annullaPrenotazione(@PathVariable int utenteId, @PathVariable int eventoId) {
+        boolean annullamentoRiuscito = utentiService.annullaPrenotazione(utenteId, eventoId);
+        if (annullamentoRiuscito) {
+            return ResponseEntity.ok("Prenotazione annullata con successo!");
+        } else {
+            return ResponseEntity.badRequest().body("Impossibile annullare la prenotazione per questo evento.");
+        }
     }
 
 }

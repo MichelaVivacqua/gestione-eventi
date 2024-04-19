@@ -2,6 +2,7 @@ package michelavivacqua.gestione.eventi.services;
 
 import jakarta.transaction.Transactional;
 import michelavivacqua.gestione.eventi.entities.Evento;
+import michelavivacqua.gestione.eventi.entities.Utente;
 import michelavivacqua.gestione.eventi.exceptions.NotFoundException;
 import michelavivacqua.gestione.eventi.payloads.NewEventoDTO;
 import michelavivacqua.gestione.eventi.repositories.EventiDAO;
@@ -81,4 +82,33 @@ public class EventiService {
         }
         return false; // Prenotazione non riuscita
     }
+
+//    @Transactional
+//    public boolean prenotaPosto(int eventoId, Utente utente) {
+//        Optional<Evento> optionalEvento = eventiDAO.findById(eventoId);
+//        if (optionalEvento.isPresent()) {
+//            Evento evento = optionalEvento.get();
+//            if (evento.getCapienza() > 0) {
+////                evento.getPrenotazioni().add(utente);
+//                utente.getPrenotazioni().add(evento);
+//                evento.setCapienza(evento.getCapienza() - 1);
+//                eventiDAO.save(evento);
+//                return true; // Prenotazione riuscita
+//            }
+//        }
+//        return false; // Prenotazione non riuscita
+//    }
+
+//    public List<Evento> getEventiPrenotatiDaUtente(int utenteId) {
+//        return eventiDAO.findEventiByUtenteId(utenteId);
+//    }
+//    public void annullaPrenotazione(int utenteId, int eventoId) {
+//        Utente utente = utentiDAO.findById(utenteId).orElseThrow(() -> new NotFoundException("Utente non trovato"));
+//        Evento evento = eventiDAO.findById(eventoId).orElseThrow(() -> new NotFoundException("Evento non trovato"));
+//
+//        // Rimuovi la prenotazione dell'utente per l'evento
+//        evento.setCapienza(evento.getCapienza() + 1);
+//        eventiDAO.save(evento);
+//    }
+
 }

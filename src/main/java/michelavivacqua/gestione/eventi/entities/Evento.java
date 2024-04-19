@@ -1,12 +1,13 @@
 package michelavivacqua.gestione.eventi.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,6 +24,8 @@ public class Evento {
     private LocalDate data;
     private String location;
     private int capienza;
+//    @ManyToMany(mappedBy = "prenotazioni")
+//    private List<Utente> utenti = new ArrayList<>();
 
     public Evento(String titolo, String descrizione, LocalDate data, String location, int capienza) {
         this.titolo=titolo;
@@ -31,4 +34,20 @@ public class Evento {
         this.location=location;
         this.capienza=capienza;
     }
+
+//    public Evento(String titolo, String descrizione, LocalDate data, String location, int capienza) {
+//        this.titolo=titolo;
+//        this.descrizione=descrizione;
+//        this.data=data;
+//        this.location=location;
+//        this.capienza=capienza;
+//        this.utenti = new ArrayList<>();
+//    }
+
+
+
+//    public List<Utente> getPrenotazioni() {
+//        return utenti;
+//    }
+
 }

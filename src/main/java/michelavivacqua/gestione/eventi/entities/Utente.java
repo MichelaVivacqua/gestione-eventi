@@ -7,8 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Getter
     @Setter
@@ -27,14 +26,23 @@ import java.util.List;
         private String password;
         @Enumerated(EnumType.STRING)
         private Ruolo ruolo;
+    @ManyToMany
+    @JoinTable(
+            name = "prenotazioni_utente",
+            joinColumns = @JoinColumn(name = "utente_id"),
+            inverseJoinColumns = @JoinColumn(name = "evento_id")
+    )
+    private List<Evento> prenotazioni = new ArrayList<>();
 
-        public Utente(String username, String nome, String cognome, String email, String password, Ruolo ruolo) {
+
+    public Utente(String username, String nome, String cognome, String email, String password, Ruolo ruolo) {
             this.username=username;
             this.nome=nome;
             this.cognome=cognome;
             this.email=email;
             this.password=password;
             this.ruolo=ruolo;
+//        this.prenotazioni = new ArrayList<>();
         }
 
 
@@ -63,4 +71,6 @@ import java.util.List;
     public boolean isEnabled() {
         return true;
     }
+
+
 }

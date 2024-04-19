@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "23059ac9-ec04-4f94-ab07-ede7229cdc7e",
+		"name": "gestione-eventi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34138800"
+	},
+	"item": [
+		{
+			"name": "registrazione",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"BrowserBros\",\r\n    \"nome\": \"Mario\",\r\n    \"cognome\": \"Bros\",\r\n    \"email\": \"Browser@email.com\",\r\n    \"password\": \"password123\",\r\n    \"ruolo\": \"ORGANIZZATORE\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/auth/register"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"daisy@email.com\",\r\n    \"password\": \"password123\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "evento",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTM1MzMxNzcsImV4cCI6MTcxNDEzNzk3Nywic3ViIjoiNCJ9.m19_4DGjspC8E8ojWfTb385uNJvxyXPJs4Nn3SnMrT8osEaAPxFjJgcZNWXn5Homa14sm2qtaqTFlTtxPRGknw"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"titolo\": \"concerto\",\r\n    \"descrizione\": \"gigi d'alessio\",\r\n    \"data\": \"2024-04-20\",\r\n    \"location\": \"piazza plebiscito napoli\",\r\n    \"capienza\": 750\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/eventi"
+			},
+			"response": []
+		},
+		{
+			"name": "utenti",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTM1MzMxNzcsImV4cCI6MTcxNDEzNzk3Nywic3ViIjoiNCJ9.m19_4DGjspC8E8ojWfTb385uNJvxyXPJs4Nn3SnMrT8osEaAPxFjJgcZNWXn5Homa14sm2qtaqTFlTtxPRGknw"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3001/utenti"
+			},
+			"response": []
+		},
+		{
+			"name": "eventi",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTM1MzM0MDQsImV4cCI6MTcxNDEzODIwNCwic3ViIjoiMiJ9.j7nzUVDurxMswZky87K_KYnjS4gySGn01UEC_ZqrhyCg62tR3ebf3-ZnQe4xJDbvUyX-NNLdpeLmYffRhhm1ug"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3001/eventi"
+			},
+			"response": []
+		},
+		{
+			"name": "evento",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTM1MzMxNzcsImV4cCI6MTcxNDEzNzk3Nywic3ViIjoiNCJ9.m19_4DGjspC8E8ojWfTb385uNJvxyXPJs4Nn3SnMrT8osEaAPxFjJgcZNWXn5Homa14sm2qtaqTFlTtxPRGknw"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"titolo\": \"oneday\",\r\n    \"descrizione\": \"catania\",\r\n    \"data\": \"2024-05-01\",\r\n    \"location\": \"afrobar\",\r\n    \"capienza\": 998\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/eventi/2"
+			},
+			"response": []
+		},
+		{
+			"name": "evento",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTM1MzM0MjgsImV4cCI6MTcxNDEzODIyOCwic3ViIjoiNCJ9.FPDHx89X4S-NUn-ZmGBMcWnBuo4Y2dJpQG0fBQHh4sFsnNk4X2-90YSXfwssrM0AagMx4JDQQ_MvQ1Wxr_cY1g"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3001/eventi/3"
+			},
+			"response": []
+		},
+		{
+			"name": "prenotazione",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTM1MzczMjQsImV4cCI6MTcxNDE0MjEyNCwic3ViIjoiMSJ9._RRZje10xD5avWYiU1ZhSHwPIjbkP22gipbWnhjnzqzEPdiZWoKA_cbXyAnCImteyB2TzWGVgaYdlmO3du0BCg"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:3001/eventi/1/prenota"
+			},
+			"response": []
+		},
+		{
+			"name": "prenotazioni per utente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MTM1MzM0NzYsImV4cCI6MTcxNDEzODI3Niwic3ViIjoiMiJ9.m4UdQnJ-bmrxpmeXNV2j2NWARKqCBXimUZjnxqINbyEsrLDRXUiHIaOnAHVfBn4gbOlKFMzHK30g3fXgzl18hQ"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3001/utenti/1/prenotazioni"
+			},
+			"response": []
+		}
+	]
+}

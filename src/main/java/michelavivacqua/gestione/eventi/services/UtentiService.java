@@ -1,9 +1,12 @@
 package michelavivacqua.gestione.eventi.services;
 
+
+import michelavivacqua.gestione.eventi.entities.Evento;
 import michelavivacqua.gestione.eventi.entities.Utente;
 import michelavivacqua.gestione.eventi.exceptions.BadRequestException;
 import michelavivacqua.gestione.eventi.exceptions.NotFoundException;
 import michelavivacqua.gestione.eventi.payloads.NewUtenteDTO;
+import michelavivacqua.gestione.eventi.repositories.EventiDAO;
 import michelavivacqua.gestione.eventi.repositories.UtentiDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,14 +15,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UtentiService {
 
     @Autowired
     private UtentiDAO utentiDAO;
+
+    @Autowired
+    private EventiDAO eventiDAO;
 
     @Autowired
     private PasswordEncoder bcrypt;
@@ -75,4 +84,39 @@ public class UtentiService {
     }
 
 
+    @Transactional(readOnly = true)
+    public List<Evento> getPrenotazioniUtente(int utenteId) {
+        Optional<Utente> optionalUtente = utentiDAO.findById(utenteId);
+        if (optionalUtente.isPresent()) {
+            Utente utente = optionalUtente.get();
+            return utente.getPrenotazioni();
+        }
+        return Collections.emptyList(); // Utente non trovato o nessuna prenotazione
+
+    }
+
+
+
+    @Transactional
+    public boolean annullaPrenotazione(int utenteId, int eventoId) {
+        Optional<Utente> optionalUtente = utentiDAO.findById(utenteId);
+        Optional<Evento> optionalEvento = eventiDAO.findById(eventoId);
+
+        if (optionalUtente.isPresent() && optionalEvento.isPresent()) {
+            Utente utente = optionalUtente.get();
+            Evento evento = optionalEvento.get();
+
+            // Elimino l'evento dalle prenotazioni dell'utente
+            boolean removed = utente.getPrenotazioni().remove(evento);
+            if (removed) {
+               evento.setCapienza(evento.getCapienza() + 1);
+                utentiDAO.save(utente);
+                eventiDAO.save(evento);
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
+

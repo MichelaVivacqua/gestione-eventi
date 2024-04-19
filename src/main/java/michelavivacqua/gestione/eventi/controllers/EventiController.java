@@ -1,6 +1,7 @@
 package michelavivacqua.gestione.eventi.controllers;
 
 import michelavivacqua.gestione.eventi.entities.Evento;
+import michelavivacqua.gestione.eventi.entities.Utente;
 import michelavivacqua.gestione.eventi.exceptions.BadRequestException;
 import michelavivacqua.gestione.eventi.payloads.NewEventoDTO;
 import michelavivacqua.gestione.eventi.payloads.NewEventoRespDTO;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.validation.BindingResult;
@@ -77,8 +79,8 @@ public class EventiController {
         this.eventiService.findByIdAndDelete(eventoId);
     }
 
-    // PRENOTA
-    // POST http://localhost:3001/eventi/{eventoId}/prenota (+authorization bear token da partecipante)
+//     PRENOTA
+//     POST http://localhost:3001/eventi/{eventoId}/prenota (+authorization bear token da partecipante)
     @PostMapping("/{eventoId}/prenota")
     @PreAuthorize("hasAuthority('PARTECIPANTE')") //solo un utente di tipo partecipante può creare eventi
     public ResponseEntity<String> prenotaPosto(@PathVariable int eventoId) {
@@ -89,5 +91,26 @@ public class EventiController {
             return ResponseEntity.badRequest().body("Impossibile effettuare la prenotazione per questo evento. Posti esauriti.");
         }
     }
+
+//    @PostMapping("/{eventoId}/prenota")
+//    @PreAuthorize("hasAuthority('PARTECIPANTE')")
+//    public ResponseEntity<String> prenotaPosto(@PathVariable int eventoId, @AuthenticationPrincipal Utente currentAuthenticatedUtente) {
+//        boolean prenotazioneRiuscita = eventiService.prenotaPosto(eventoId, currentAuthenticatedUtente);
+//        if (prenotazioneRiuscita) {
+//            return ResponseEntity.ok("Prenotazione avvenuta con successo!");
+//        } else {
+//            return ResponseEntity.badRequest().body("Impossibile effettuare la prenotazione per questo evento. Posti esauriti.");
+//        }
+//    }
+
+//    @GetMapping("/utenti/{utenteId}/eventi-prenotati")
+//    public List<Evento> getEventiPrenotatiDaUtente(@PathVariable int utenteId) {
+//        return this.eventiService.getEventiPrenotatiDaUtente(utenteId);
+//    }
+//    @DeleteMapping("/utenti/{utenteId}/eventi-prenotati/{eventoId}/annulla-prenotazione")
+//    public void annullaPrenotazione(@PathVariable int utenteId, @PathVariable int eventoId) {
+//        this.eventiService.annullaPrenotazione(utenteId, eventoId);
+//    }
+
 
 }
